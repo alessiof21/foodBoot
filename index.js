@@ -52,10 +52,27 @@ bot.on('text', async msg => {
                 }
             });
         } else if (msg.text === '/help' || msg.text === 'Помощь') {
-            await bot.sendMessage(msg.chat.id, 'Пока мой функционал не очень велик..Но я могу помочь тебе рассчитать калорийность продукта, зная его вес и калорийность на 100г');
+            await bot.sendMessage(msg.chat.id, 'Пока мой функционал не очень велик..Но я могу помочь тебе рассчитать калорийность продукта, зная его вес и калорийность на 100г, просто используй команду <b>/ccal</b>', {
+                parse_mode: "HTML"
+            });
         } else {
+            if (answers[msg.chat.id] === undefined) {
+                return await bot.sendMessage(msg.chat.id, 'Привет! Чтобы начать, используй команду <b>/start</b> или кнопку <b>Запустить бота</b>', {
+                    parse_mode: "HTML"
+                });
+            } else if (answers[msg.chat.id].ccal === undefined) {
+                return await bot.sendMessage(msg.chat.id, 'Прости пожалуйста, я не разобрал твою команду, воспользуйся <b>/help</b> для помощи', {
+                    parse_mode: "HTML"
+                });
+            }
+
             const editMsg = msg.text.replace(/,/gi, '.');
             const quan = parseFloat(editMsg);
+
+            if (isNaN(quan)) {
+                return await bot.sendMessage(msg.chat.id, `Пожалуйста, введите корректное число, ${msg.text} - не число!`);
+            }
+
             if (answers[msg.chat.id].ccal.ccal === false) {
                 answers[msg.chat.id].ccal.ccal = quan;
                 await bot.sendMessage(msg.chat.id, 'Хорошо, а теперь введи вес продукта');
