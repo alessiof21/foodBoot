@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 
-const API_KEY_BOT = '6916354601:AAEOFFmm_G-_Trx6sHGTkUs-aCDh94u2ErU';
+const API_KEY_BOT = 'Место для Вашего токена';
 
 const bot = new TelegramBot(API_KEY_BOT, {
 
